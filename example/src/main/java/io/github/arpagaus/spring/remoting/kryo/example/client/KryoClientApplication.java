@@ -1,6 +1,6 @@
 package io.github.arpagaus.spring.remoting.kryo.example.client;
 
-import com.esotericsoftware.kryo.Kryo;
+import io.github.arpagaus.spring.remoting.kryo.KryoProvider;
 import io.github.arpagaus.spring.remoting.kryo.client.KryoHttpComponentsHttpInvokerRequestExecutor;
 import io.github.arpagaus.spring.remoting.kryo.example.api.IMailService;
 import io.github.arpagaus.spring.remoting.kryo.example.api.KryoConfiguration;
@@ -10,10 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
-import sun.net.www.http.HttpClient;
 
 import java.time.LocalDateTime;
-import java.util.function.Supplier;
 
 @SpringBootApplication(scanBasePackageClasses = KryoConfiguration.class)
 public class KryoClientApplication {
@@ -32,8 +30,8 @@ public class KryoClientApplication {
     }
 
     @Bean
-    public HttpInvokerProxyFactoryBean hessianInvoker(Supplier<Kryo> kryoSupplier) {
-        KryoHttpComponentsHttpInvokerRequestExecutor requestExecutor = new KryoHttpComponentsHttpInvokerRequestExecutor(kryoSupplier);
+    public HttpInvokerProxyFactoryBean hessianInvoker(KryoProvider kryoProvider) {
+        KryoHttpComponentsHttpInvokerRequestExecutor requestExecutor = new KryoHttpComponentsHttpInvokerRequestExecutor(kryoProvider);
         requestExecutor.setHttpClient(HttpClients.createSystem());
 
         HttpInvokerProxyFactoryBean remoteAccessor = new HttpInvokerProxyFactoryBean();
